@@ -160,10 +160,11 @@ EasyAR::samples::HelloAR ar;
 
 - (void)start{
     ar.initCamera();
-    ar.loadFromJsonFile("targets.json", "argame");
-    ar.loadFromJsonFile("targets.json", "idback");
-    ar.loadAllFromJsonFile("targets2.json");
-    ar.loadFromImage("namecard.jpg");
+//    ar.loadFromJsonFile("targets.json", "argame");
+//    ar.loadFromJsonFile("targets.json", "idback");
+//    ar.loadAllFromJsonFile("targets2.json");
+//    ar.loadFromImage("namecard.jpg");
+    ar.loadFromImage("icon.jpg");
     ar.start();
 
     self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkCallback:)];

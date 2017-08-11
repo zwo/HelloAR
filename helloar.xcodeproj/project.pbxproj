@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C455E03F1F3D54D000C8AB5E /* icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C455E03E1F3D54D000C8AB5E /* icon.jpg */; };
 		F15BDCD41C03FEE200666121 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F15BDCD31C03FEE200666121 /* main.m */; };
 		F15BDCDD1C03FEE200666121 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F15BDCDB1C03FEE200666121 /* Main.storyboard */; };
 		F15BDCDF1C03FEE200666121 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F15BDCDE1C03FEE200666121 /* Assets.xcassets */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C455E03E1F3D54D000C8AB5E /* icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = icon.jpg; sourceTree = "<group>"; };
 		F15BDCCF1C03FEE200666121 /* helloar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = helloar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F15BDCD31C03FEE200666121 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F15BDCDC1C03FEE200666121 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 		F1D13C291C042B87008F72E2 /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				C455E03E1F3D54D000C8AB5E /* icon.jpg */,
 				F1D13C1F1C0429E7008F72E2 /* idback.jpg */,
 				F1D13C201C0429E7008F72E2 /* namecard.jpg */,
 				F1D13C211C0429E7008F72E2 /* sightplus */,
@@ -215,6 +218,7 @@
 				F1D13C281C0429E7008F72E2 /* targets2.json in Resources */,
 				F15BDCDF1C03FEE200666121 /* Assets.xcassets in Resources */,
 				F15BDCDD1C03FEE200666121 /* Main.storyboard in Resources */,
+				C455E03F1F3D54D000C8AB5E /* icon.jpg in Resources */,
 				F1A7AA2C1C06CA330060ADF6 /* LaunchScreen.xib in Resources */,
 				F1D13C261C0429E7008F72E2 /* sightplus in Resources */,
 				F1D13C271C0429E7008F72E2 /* targets.json in Resources */,
