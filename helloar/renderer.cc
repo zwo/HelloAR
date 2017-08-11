@@ -11,6 +11,8 @@
 #include <GLES2/gl2.h>
 #endif
 
+#include <iostream>
+
 const char* box_vert="uniform mat4 trans;\n"
         "uniform mat4 proj;\n"
         "attribute vec4 coord;\n"
@@ -86,9 +88,24 @@ void Renderer::init()
         /* -x */{3, 0, 4, 7}, /* +x */{1, 2, 6, 5}, /* -z */{4, 5, 6, 7}};
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cube_faces), cube_faces, GL_STATIC_DRAW);
 }
-
+/*
+    +--------------+1
+   /|2            /|
+  / |            / |
+3*--+-----------*0 |
+ |  |           |  |
+ |  |           |  |
+ |  |           |  |
+ | 6+-----------+--+5
+ | /            | /
+ |/             |/
+7*--------------*4
+ */
 void Renderer::render(const Matrix44F& projectionMatrix, const Matrix44F& cameraview, Vec2F size)
 {
+//    std::cout << "size0: " << size[0] << std::endl;
+//    std::cout << "size1: " << size[1] << std::endl; // output 1
+    // 底座
     glBindBuffer(GL_ARRAY_BUFFER, vbo_coord_box);
     float height = size[0] / 1000;
     const GLfloat cube_vertices[8][3] = {
@@ -113,6 +130,7 @@ void Renderer::render(const Matrix44F& projectionMatrix, const Matrix44F& camera
         glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, (void*)(i * 4 * sizeof(GLushort)));
     }
 
+    // 立方体
     glBindBuffer(GL_ARRAY_BUFFER, vbo_coord_box);
     const GLfloat cube_vertices_2[8][3] = {
         /* +z */{size[0] / 4, size[1] / 4, size[0] / 4},{size[0] / 4, -size[1] / 4, size[0] / 4},{-size[0] / 4, -size[1] / 4, size[0] / 4},{-size[0] / 4, size[1] / 4, size[0] / 4},
