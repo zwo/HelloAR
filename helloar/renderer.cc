@@ -5,11 +5,7 @@
 */
 
 #include "renderer.hpp"
-#if defined __APPLE__
-#include <OpenGLES/ES2/gl.h>
-#else
-#include <GLES2/gl2.h>
-#endif
+
 
 #include <iostream>
 
@@ -18,11 +14,14 @@ const char* box_vert="uniform mat4 trans;\n"
         "attribute vec4 coord;\n"
         "attribute vec4 color;\n"
         "varying vec4 vcolor;\n"
+        "attribute vec2 TexCoordIn;\n"
+        "varying vec2 TexCoordOut;\n"
         "\n"
         "void main(void)\n"
         "{\n"
         "    vcolor = color;\n"
         "    gl_Position = proj*trans*coord;\n"
+        "    TexCoordOut = TexCoordIn;\n"
         "}\n"
         "\n"
 ;
@@ -31,10 +30,12 @@ const char* box_frag="#ifdef GL_ES\n"
         "precision highp float;\n"
         "#endif\n"
         "varying vec4 vcolor;\n"
+        "varying lowp vec2 TexCoordOut;\n"
+        "uniform sampler2D Texture;\n"
         "\n"
         "void main(void)\n"
         "{\n"
-        "    gl_FragColor = vcolor;\n"
+        "    gl_FragColor = vcolor * texture2D(Texture, TexCoordOut);\n"
         "}\n"
         "\n"
 ;
@@ -59,6 +60,9 @@ void Renderer::init()
     pos_color_box = glGetAttribLocation(program_box, "color");
     pos_trans_box = glGetUniformLocation(program_box, "trans");
     pos_proj_box = glGetUniformLocation(program_box, "proj");
+    _texCoordSlot = glGetAttribLocation(program_box, "TexCoordIn");
+    glEnableVertexAttribArray(_texCoordSlot);
+    _textureUniform = glGetUniformLocation(program_box, "Texture");
 
     glGenBuffers(1, &vbo_coord_box);
     glBindBuffer(GL_ARRAY_BUFFER, vbo_coord_box);
@@ -89,17 +93,17 @@ void Renderer::init()
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cube_faces), cube_faces, GL_STATIC_DRAW);
 }
 /*
-    +--------------+1
-   /|2            /|
+    +--------------+0
+   /|3            /|
   / |            / |
-3*--+-----------*0 |
+2*--+-----------*1 |
  |  |           |  |
  |  |           |  |
  |  |           |  |
- | 6+-----------+--+5
+ | 7+-----------+--+4
  | /            | /
  |/             |/
-7*--------------*4
+6*--------------*5
  */
 void Renderer::render(const Matrix44F& projectionMatrix, const Matrix44F& cameraview, Vec2F size)
 {
@@ -145,6 +149,28 @@ void Renderer::render(const Matrix44F& projectionMatrix, const Matrix44F& camera
         glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, (void*)(i * 4 * sizeof(GLushort)));
     }
 }
+    
+    void Renderer::setupBuildingTopTexture(unsigned int textureID)
+    {
+        buildingTopTexture=textureID;
+    }
+    
+    void Renderer::setupBuildingSideTexture(unsigned int textureID)
+    {
+        buildingSideTexture=textureID;
+    }
+    
+    GLuint Renderer::generateTextureID(size_t width, size_t height, GLubyte *imageData)
+    {
+        GLuint texName;
+        glGenTextures(1, &texName);
+        glBindTexture(GL_TEXTURE_2D, texName);
+        
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)width, (GLsizei)height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
+        return texName;
+    }
 
 }
 }

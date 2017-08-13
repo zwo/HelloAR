@@ -44,6 +44,15 @@ HelloAR::HelloAR()
 void HelloAR::initGL()
 {
     renderer.init();
+    size_t width=0,height=0;
+    GLubyte *topData=[OpenGLView imageDataWithFileName:@"top.jpg" width:&width height:&height];
+    GLuint topName=renderer.generateTextureID(width, height, topData);
+    renderer.setupBuildingTopTexture(topName);
+    free(topData);
+    GLubyte *sideData=[OpenGLView imageDataWithFileName:@"side.jpg" width:&width height:&height];
+    GLuint sideName=renderer.generateTextureID(width, height, sideData);
+    renderer.setupBuildingSideTexture(sideName);
+    free(sideData);
     augmenter_ = Augmenter();
 }
 
@@ -224,6 +233,25 @@ EasyAR::samples::HelloAR ar;
         default:
             break;
     }
+}
+
++ (GLubyte *)imageDataWithFileName:(NSString *)fileName width:(size_t *)widthRef height:(size_t *)heightRef
+{
+    CGImageRef spriteImage = [UIImage imageNamed:fileName].CGImage;
+    size_t width = CGImageGetWidth(spriteImage);
+    size_t height = CGImageGetHeight(spriteImage);
+    
+    GLubyte * spriteData = (GLubyte *) calloc(width*height*4, sizeof(GLubyte));
+    
+    CGContextRef spriteContext = CGBitmapContextCreate(spriteData, width, height, 8, width*4, CGImageGetColorSpace(spriteImage), kCGImageAlphaPremultipliedLast);
+    
+    // 3
+    CGContextDrawImage(spriteContext, CGRectMake(0, 0, width, height), spriteImage);
+    
+    CGContextRelease(spriteContext);
+    *widthRef = width;
+    *heightRef = height;
+    return spriteData;
 }
 
 @end

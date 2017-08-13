@@ -9,6 +9,14 @@
 
 #include "easyar/matrix.hpp"
 
+#if defined __APPLE__
+#include <OpenGLES/ES2/gl.h>
+#else
+#include <GLES2/gl2.h>
+#endif
+
+#include <stdlib.h>
+
 namespace EasyAR{
 namespace samples{
 
@@ -17,6 +25,9 @@ class Renderer
 public:
     void init();
     void render(const Matrix44F& projectionMatrix, const Matrix44F& cameraview, Vec2F size);
+    GLuint generateTextureID(size_t width, size_t height, GLubyte *imageData);
+    void setupBuildingTopTexture(unsigned int textureID);
+    void setupBuildingSideTexture(unsigned int textureID);
 private:
     unsigned int program_box;
     int pos_coord_box;
@@ -27,6 +38,10 @@ private:
     unsigned int vbo_color_box;
     unsigned int vbo_color_box_2;
     unsigned int vbo_faces_box;
+    unsigned int buildingTopTexture;
+    unsigned int buildingSideTexture;
+    GLuint _texCoordSlot;
+    GLuint _textureUniform;
 };
 
 }

@@ -19,5 +19,6 @@
 - (void)stop;
 - (void)resize:(CGRect)frame orientation:(UIInterfaceOrientation)orientation;
 - (void)setOrientation:(UIInterfaceOrientation)orientation;
++ (GLubyte *)imageDataWithFileName:(NSString *)fileName width:(size_t *)widthRef height:(size_t *)heightRef;
 
 @end
