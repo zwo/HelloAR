@@ -8,37 +8,9 @@
 
 
 #include <iostream>
-
-const char* box_vert="uniform mat4 trans;\n"
-        "uniform mat4 proj;\n"
-        "attribute vec4 coord;\n"
-        "attribute vec4 color;\n"
-        "varying vec4 vcolor;\n"
-        "attribute vec2 TexCoordIn;\n"
-        "varying vec2 TexCoordOut;\n"
-        "\n"
-        "void main(void)\n"
-        "{\n"
-        "    vcolor = color;\n"
-        "    gl_Position = proj*trans*coord;\n"
-        "    TexCoordOut = TexCoordIn;\n"
-        "}\n"
-        "\n"
-;
-
-const char* box_frag="#ifdef GL_ES\n"
-        "precision highp float;\n"
-        "#endif\n"
-        "varying vec4 vcolor;\n"
-        "varying lowp vec2 TexCoordOut;\n"
-        "uniform sampler2D Texture;\n"
-        "\n"
-        "void main(void)\n"
-        "{\n"
-        "    gl_FragColor = vcolor * texture2D(Texture, TexCoordOut);\n"
-        "}\n"
-        "\n"
-;
+extern "C" {
+#include "ARHelperBridge.h"
+}
 
 namespace EasyAR{
 namespace samples{
@@ -47,9 +19,11 @@ void Renderer::init()
 {
     program_box = glCreateProgram();
     GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
+    const char *box_vert=glslSource("vert");
     glShaderSource(vertShader, 1, &box_vert, 0);
     glCompileShader(vertShader);
     GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
+    const char *box_frag=glslSource("frag");
     glShaderSource(fragShader, 1, &box_frag, 0);
     glCompileShader(fragShader);
     glAttachShader(program_box, vertShader);
@@ -63,6 +37,14 @@ void Renderer::init()
     _texCoordSlot = glGetAttribLocation(program_box, "TexCoordIn");
     glEnableVertexAttribArray(_texCoordSlot);
     _textureUniform = glGetUniformLocation(program_box, "Texture");
+    
+    size_t width=0,height=0;
+    GLubyte *topData=imageDataWithFileName("top.jpg", &width, &height);
+    GLuint topName=generateTextureID(width, height, topData);
+    buildingTopTexture=topName;
+    GLubyte *sideData=imageDataWithFileName("side.jpg", &width, &height);
+    GLuint sideName=generateTextureID(width, height, sideData);
+    buildingSideTexture=sideName;
 
     glGenBuffers(1, &vbo_coord_box);
     glBindBuffer(GL_ARRAY_BUFFER, vbo_coord_box);
@@ -148,17 +130,7 @@ void Renderer::render(const Matrix44F& projectionMatrix, const Matrix44F& camera
     for(int i = 0; i < 6; i++) {
         glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, (void*)(i * 4 * sizeof(GLushort)));
     }
-}
-    
-    void Renderer::setupBuildingTopTexture(unsigned int textureID)
-    {
-        buildingTopTexture=textureID;
-    }
-    
-    void Renderer::setupBuildingSideTexture(unsigned int textureID)
-    {
-        buildingSideTexture=textureID;
-    }
+}    
     
     GLuint Renderer::generateTextureID(size_t width, size_t height, GLubyte *imageData)
     {

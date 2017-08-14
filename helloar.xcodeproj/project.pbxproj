@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C432C74C1F413FDB00406B13 /* ARHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C432C74B1F413FDB00406B13 /* ARHelper.m */; };
+		C432C74F1F414A7D00406B13 /* vert.glsl in Resources */ = {isa = PBXBuildFile; fileRef = C432C74E1F414A7D00406B13 /* vert.glsl */; };
+		C432C7511F414B7C00406B13 /* frag.glsl in Resources */ = {isa = PBXBuildFile; fileRef = C432C7501F414B7C00406B13 /* frag.glsl */; };
 		C455E03F1F3D54D000C8AB5E /* icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C455E03E1F3D54D000C8AB5E /* icon.jpg */; };
 		C4718EC71F4086D100B97005 /* side.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C4718EC51F4086D100B97005 /* side.jpg */; };
 		C4718EC81F4086D100B97005 /* top.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C4718EC61F4086D100B97005 /* top.jpg */; };
@@ -36,6 +39,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C432C74A1F413FDB00406B13 /* ARHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHelper.h; sourceTree = "<group>"; };
+		C432C74B1F413FDB00406B13 /* ARHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARHelper.m; sourceTree = "<group>"; };
+		C432C74D1F41454B00406B13 /* ARHelperBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARHelperBridge.h; sourceTree = "<group>"; };
+		C432C74E1F414A7D00406B13 /* vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vert.glsl; sourceTree = "<group>"; };
+		C432C7501F414B7C00406B13 /* frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = frag.glsl; sourceTree = "<group>"; };
 		C455E03E1F3D54D000C8AB5E /* icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = icon.jpg; sourceTree = "<group>"; };
 		C4718EC51F4086D100B97005 /* side.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = side.jpg; sourceTree = "<group>"; };
 		C4718EC61F4086D100B97005 /* top.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = top.jpg; sourceTree = "<group>"; };
@@ -135,6 +143,11 @@
 				F15BDCDE1C03FEE200666121 /* Assets.xcassets */,
 				F15BDCE31C03FEE200666121 /* Info.plist */,
 				F15BDCD21C03FEE200666121 /* Supporting Files */,
+				C432C74A1F413FDB00406B13 /* ARHelper.h */,
+				C432C74B1F413FDB00406B13 /* ARHelper.m */,
+				C432C74D1F41454B00406B13 /* ARHelperBridge.h */,
+				C432C74E1F414A7D00406B13 /* vert.glsl */,
+				C432C7501F414B7C00406B13 /* frag.glsl */,
 			);
 			path = helloar;
 			sourceTree = "<group>";
@@ -220,6 +233,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C432C7511F414B7C00406B13 /* frag.glsl in Resources */,
 				C4718EC81F4086D100B97005 /* top.jpg in Resources */,
 				F1D13C251C0429E7008F72E2 /* namecard.jpg in Resources */,
 				F1D13C281C0429E7008F72E2 /* targets2.json in Resources */,
@@ -230,6 +244,7 @@
 				C4718EC71F4086D100B97005 /* side.jpg in Resources */,
 				F1D13C261C0429E7008F72E2 /* sightplus in Resources */,
 				F1D13C271C0429E7008F72E2 /* targets.json in Resources */,
+				C432C74F1F414A7D00406B13 /* vert.glsl in Resources */,
 				F1D13C241C0429E7008F72E2 /* idback.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -246,6 +261,7 @@
 				F1D13BCC1C0405F5008F72E2 /* AppDelegate.mm in Sources */,
 				F1D13BD01C0405F5008F72E2 /* renderer.cc in Sources */,
 				F1D13BCF1C0405F5008F72E2 /* OpenGLView.mm in Sources */,
+				C432C74C1F413FDB00406B13 /* ARHelper.m in Sources */,
 				F15BDCD41C03FEE200666121 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -361,7 +377,7 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = ../../package/iOS;
 				INFOPLIST_FILE = helloar/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.easyar.samples.helloar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -375,7 +391,7 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = ../../package/iOS;
 				INFOPLIST_FILE = helloar/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.easyar.samples.helloar;
 				PRODUCT_NAME = "$(TARGET_NAME)";

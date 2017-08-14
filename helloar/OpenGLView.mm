@@ -44,15 +44,6 @@ HelloAR::HelloAR()
 void HelloAR::initGL()
 {
     renderer.init();
-    size_t width=0,height=0;
-    GLubyte *topData=[OpenGLView imageDataWithFileName:@"top.jpg" width:&width height:&height];
-    GLuint topName=renderer.generateTextureID(width, height, topData);
-    renderer.setupBuildingTopTexture(topName);
-    free(topData);
-    GLubyte *sideData=[OpenGLView imageDataWithFileName:@"side.jpg" width:&width height:&height];
-    GLuint sideName=renderer.generateTextureID(width, height, sideData);
-    renderer.setupBuildingSideTexture(sideName);
-    free(sideData);
     augmenter_ = Augmenter();
 }
 

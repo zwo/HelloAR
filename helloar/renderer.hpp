@@ -26,8 +26,6 @@ public:
     void init();
     void render(const Matrix44F& projectionMatrix, const Matrix44F& cameraview, Vec2F size);
     GLuint generateTextureID(size_t width, size_t height, GLubyte *imageData);
-    void setupBuildingTopTexture(unsigned int textureID);
-    void setupBuildingSideTexture(unsigned int textureID);
 private:
     unsigned int program_box;
     int pos_coord_box;
