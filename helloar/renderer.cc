@@ -48,6 +48,7 @@ void Renderer::init()
     pos_color_box = glGetAttribLocation(program_box, "color");
     pos_trans_box = glGetUniformLocation(program_box, "trans");
     pos_proj_box = glGetUniformLocation(program_box, "proj");
+    texture_switch = glGetUniformLocation(program_box, "TexOnIn");
     
     _texCoordSlot = glGetAttribLocation(program_box, "TexCoordIn");
     glEnableVertexAttribArray(_texCoordSlot);
@@ -125,6 +126,7 @@ void Renderer::render(const Matrix44F& projectionMatrix, const Matrix44F& camera
     glUniformMatrix4fv(pos_trans_box, 1, 0, cameraview.data);
     glUniformMatrix4fv(pos_proj_box, 1, 0, projectionMatrix.data);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo_faces_box);
+    glUniform1i(texture_switch, 0);
     for(int i = 0; i < 6; i++) {
         glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, (void*)(i * 4 * sizeof(GLushort)));
     }

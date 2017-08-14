@@ -32,6 +32,7 @@ private:
     int pos_color_box;
     int pos_trans_box;
     int pos_proj_box;
+    int texture_switch;
     unsigned int vbo_coord_box;
     unsigned int vbo_color_box;
     unsigned int vbo_color_box_2;
