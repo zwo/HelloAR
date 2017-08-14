@@ -12,6 +12,16 @@ extern "C" {
 #include "ARHelperBridge.h"
 }
 
+/*
+ for attribute: (1)use program (2)glGetAttribLocation save in a int var (3)glEnableVertexAttribArray
+ (4) 设置VBO
+ (5)glVertexAttribPointer - feed values to the shader 其实就是说明buffer的data怎么用的
+ parameters 1. attribute name 2. how many values are present for each vertex 3. type 5. size of stride 6. offset of stride
+ 
+ for VBO 有2种，one to keep track of the per-vertex data, one to keep track of the indices that make up triangles
+ (1)glGenBuffers (2)glBindBuffer (3)glBufferData
+ */
+
 namespace EasyAR{
 namespace samples{
 
@@ -22,10 +32,14 @@ void Renderer::init()
     const char *box_vert=glslSource("vert");
     glShaderSource(vertShader, 1, &box_vert, 0);
     glCompileShader(vertShader);
+    
+    printGLErrorMessage(vertShader);
+    
     GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
     const char *box_frag=glslSource("frag");
     glShaderSource(fragShader, 1, &box_frag, 0);
     glCompileShader(fragShader);
+    printGLErrorMessage(fragShader);
     glAttachShader(program_box, vertShader);
     glAttachShader(program_box, fragShader);
     glLinkProgram(program_box);
@@ -34,10 +48,10 @@ void Renderer::init()
     pos_color_box = glGetAttribLocation(program_box, "color");
     pos_trans_box = glGetUniformLocation(program_box, "trans");
     pos_proj_box = glGetUniformLocation(program_box, "proj");
+    
     _texCoordSlot = glGetAttribLocation(program_box, "TexCoordIn");
     glEnableVertexAttribArray(_texCoordSlot);
     _textureUniform = glGetUniformLocation(program_box, "Texture");
-    
     size_t width=0,height=0;
     GLubyte *topData=imageDataWithFileName("top.jpg", &width, &height);
     GLuint topName=generateTextureID(width, height, topData);
@@ -103,7 +117,6 @@ void Renderer::render(const Matrix44F& projectionMatrix, const Matrix44F& camera
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
     glUseProgram(program_box);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_coord_box);
     glEnableVertexAttribArray(pos_coord_box);
     glVertexAttribPointer(pos_coord_box, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBuffer(GL_ARRAY_BUFFER, vbo_color_box);
@@ -119,8 +132,8 @@ void Renderer::render(const Matrix44F& projectionMatrix, const Matrix44F& camera
     // 立方体
     glBindBuffer(GL_ARRAY_BUFFER, vbo_coord_box);
     const GLfloat cube_vertices_2[8][3] = {
-        /* +z */{size[0] / 4, size[1] / 4, size[0] / 4},{size[0] / 4, -size[1] / 4, size[0] / 4},{-size[0] / 4, -size[1] / 4, size[0] / 4},{-size[0] / 4, size[1] / 4, size[0] / 4},
-        /* -z */{size[0] / 4, size[1] / 4, 0},{size[0] / 4, -size[1] / 4, 0},{-size[0] / 4, -size[1] / 4, 0},{-size[0] / 4, size[1] / 4, 0}};
+        /* +z */{size[0] / 5, size[1] / 5, size[0] },{size[0] / 5, -size[1] / 5, size[0]},{-size[0] / 5, -size[1] / 5, size[0]},{-size[0] / 4, size[1] / 5, size[0]},
+        /* -z */{size[0] / 5, size[1] / 5, 0},{size[0] / 5, -size[1] / 5, 0},{-size[0] / 5, -size[1] / 5, 0},{-size[0] / 5, size[1] / 5, 0}};
     glBufferData(GL_ARRAY_BUFFER, sizeof(cube_vertices_2), cube_vertices_2, GL_DYNAMIC_DRAW);
     glEnableVertexAttribArray(pos_coord_box);
     glVertexAttribPointer(pos_coord_box, 3, GL_FLOAT, GL_FALSE, 0, 0);

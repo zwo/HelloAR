@@ -41,4 +41,17 @@ GLubyte *imageDataWithFileName(const char * fileName, size_t *widthRef, size_t *
     return spriteData;
 }
 
+void printGLErrorMessage(GLuint shaderHandler)
+{
+    GLint compileSuccess;
+    glGetShaderiv(shaderHandler, GL_COMPILE_STATUS, &compileSuccess);
+    if (compileSuccess == GL_FALSE) {
+        GLchar messages[256];
+        glGetShaderInfoLog(shaderHandler, sizeof(messages), 0, &messages[0]);
+        NSString *messageString = [NSString stringWithUTF8String:messages];
+        NSLog(@"%@", messageString);
+        exit(1);
+    }
+}
+
 @end

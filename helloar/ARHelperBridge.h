@@ -11,4 +11,5 @@
 
 const char * glslSource(const char * fileName);
 GLubyte *imageDataWithFileName(const char * fileName, size_t *widthRef, size_t *heightRef);
+void printGLErrorMessage(GLuint shaderHandler);
 #endif /* ARHelperBridge_h */
