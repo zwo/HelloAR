@@ -183,7 +183,7 @@ void Renderer::render(const Matrix44F& projectionMatrix, const Matrix44F& camera
     glEnableVertexAttribArray(_texCoordSlot);
     glVertexAttribPointer(_texCoordSlot, 2, GL_FLOAT, GL_TRUE, 0, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _tex_face_index);
-    glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, (void*)(、4 * sizeof(GLushort)));
+    glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, (void*)(4 * sizeof(GLushort)));
 }    
     
     GLuint Renderer::generateTextureID(size_t width, size_t height, GLubyte *imageData)
