@@ -51,15 +51,17 @@ void Renderer::init()
     texture_switch = glGetUniformLocation(program_box, "TexOnIn");
     
     _texCoordSlot = glGetAttribLocation(program_box, "TexCoordIn");
-    glEnableVertexAttribArray(_texCoordSlot);
+    // glEnableVertexAttribArray(_texCoordSlot);
     _textureUniform = glGetUniformLocation(program_box, "Texture");
     size_t width=0,height=0;
     GLubyte *topData=imageDataWithFileName("top.jpg", &width, &height);
     GLuint topName=generateTextureID(width, height, topData);
     buildingTopTexture=topName;
+    free(topData);
     GLubyte *sideData=imageDataWithFileName("side.jpg", &width, &height);
     GLuint sideName=generateTextureID(width, height, sideData);
     buildingSideTexture=sideName;
+    free(sideData);
 
     glGenBuffers(1, &vbo_coord_box);
     glBindBuffer(GL_ARRAY_BUFFER, vbo_coord_box);
@@ -181,9 +183,9 @@ void Renderer::render(const Matrix44F& projectionMatrix, const Matrix44F& camera
     glUniform1i(_textureUniform, 0); // unnecc in practice
     glBindBuffer(GL_ARRAY_BUFFER, _tex_face_coord);
     glEnableVertexAttribArray(_texCoordSlot);
-    glVertexAttribPointer(_texCoordSlot, 2, GL_FLOAT, GL_TRUE, 0, 0);
+    glVertexAttribPointer(_texCoordSlot, 2, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _tex_face_index);
-    glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, (void*)(4 * sizeof(GLushort)));
+    glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, 0);
 }    
     
     GLuint Renderer::generateTextureID(size_t width, size_t height, GLubyte *imageData)
