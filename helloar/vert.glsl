@@ -1,6 +1,6 @@
 uniform mat4 trans;
 uniform mat4 proj;
-uniform int TexOnIn;
+uniform bool TexOnIn;
 // varying int TexOnOut;
 attribute vec4 coord;
 attribute vec4 color;
@@ -13,10 +13,9 @@ void main(void)
     vcolor = color;
     gl_Position = proj*trans*coord;
     // TexOnOut=TexOnIn;
-    if (TexOnIn == 1)
-    {
+    if (TexOnIn)    
     	TexCoordOut = TexCoordIn;
-    }else{
+    else
     	TexCoordOut = vec2(0);
-    }
+    
 }

@@ -118,6 +118,7 @@ void Renderer::render(const Matrix44F& projectionMatrix, const Matrix44F& camera
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
     glUseProgram(program_box);
+    glUniform1i(texture_switch, GL_FALSE);
     glEnableVertexAttribArray(pos_coord_box);
     glVertexAttribPointer(pos_coord_box, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBuffer(GL_ARRAY_BUFFER, vbo_color_box);
@@ -125,8 +126,9 @@ void Renderer::render(const Matrix44F& projectionMatrix, const Matrix44F& camera
     glVertexAttribPointer(pos_color_box, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
     glUniformMatrix4fv(pos_trans_box, 1, 0, cameraview.data);
     glUniformMatrix4fv(pos_proj_box, 1, 0, projectionMatrix.data);
+    
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo_faces_box);
-    glUniform1i(texture_switch, 0);
+    
     for(int i = 0; i < 6; i++) {
         glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, (void*)(i * 4 * sizeof(GLushort)));
     }
