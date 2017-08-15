@@ -88,6 +88,21 @@ void Renderer::init()
         /* +z */{3, 2, 1, 0}, /* -y */{2, 3, 7, 6}, /* +y */{0, 1, 5, 4},
         /* -x */{3, 0, 4, 7}, /* +x */{1, 2, 6, 5}, /* -z */{4, 5, 6, 7}};
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cube_faces), cube_faces, GL_STATIC_DRAW);
+    
+    glGenBuffers(1, &_tex_face_pos);
+    glBindBuffer(GL_ARRAY_BUFFER, _tex_face_pos);
+    const GLfloat top_vertices[4][3]={/* +z */{1 / 5, 1 / 5, 1.01},{1 / 5, -1 / 5, 1.01},{-1 / 5, -1 / 5, 1.01},{-1 / 4, 1 / 5, 1.01}};
+    glBufferData(GL_ARRAY_BUFFER, sizeof(top_vertices), top_vertices, GL_DYNAMIC_DRAW);
+    
+    glGenBuffers(1, &_tex_face_index);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _tex_face_index);
+    const GLushort top_face[4]={3, 2, 1, 0};
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(top_face), top_face, GL_STATIC_DRAW);
+    
+    glGenBuffers(1, &_tex_face_coord);
+    glBindBuffer(GL_ARRAY_BUFFER, _tex_face_coord);
+    const GLfloat top_coord[4][2]={{0,0},{0,1},{1,1},{1,0}};
+    glBufferData(GL_ARRAY_BUFFER, sizeof(top_coord), top_coord, GL_STATIC_DRAW);
 }
 /*
     +--------------+0
@@ -101,6 +116,12 @@ void Renderer::init()
  | /            | /
  |/             |/
 6*--------------*5
+ 
+(0.0)  _______  (1.0)
+      |       |
+      |       |
+      |       |
+(0.1) |_______| (1.1)
  */
 void Renderer::render(const Matrix44F& projectionMatrix, const Matrix44F& cameraview, Vec2F size)
 {
@@ -147,6 +168,22 @@ void Renderer::render(const Matrix44F& projectionMatrix, const Matrix44F& camera
     for(int i = 0; i < 6; i++) {
         glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, (void*)(i * 4 * sizeof(GLushort)));
     }
+    
+    // render one face
+    glUniform1i(texture_switch, GL_TRUE);
+    glBindBuffer(GL_ARRAY_BUFFER, _tex_face_pos);
+    const GLfloat top_vertices[4][3]={/* +z */{size[0] / 5, size[1] / 5, size[0]+static_cast<GLfloat>(0.01)},{size[0] / 5, -size[1] / 5, size[0]+static_cast<GLfloat>(0.01)},{-size[0] / 5, -size[1] / 5, size[0]+static_cast<GLfloat>(0.01)},{-size[0] / 4, size[1] / 5, size[0]+static_cast<GLfloat>(0.01)}};
+    glBufferData(GL_ARRAY_BUFFER, sizeof(top_vertices), top_vertices, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(pos_coord_box);
+    glVertexAttribPointer(pos_coord_box, 3, GL_FLOAT, GL_FALSE, sizeof(top_vertices), 0);
+    glActiveTexture(GL_TEXTURE0); // unneccc in practice
+    glBindTexture(GL_TEXTURE_2D, buildingTopTexture);
+    glUniform1i(_textureUniform, 0); // unnecc in practice
+    glBindBuffer(GL_ARRAY_BUFFER, _tex_face_coord);
+    glEnableVertexAttribArray(_texCoordSlot);
+    glVertexAttribPointer(_texCoordSlot, 2, GL_FLOAT, GL_TRUE, 0, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _tex_face_index);
+    glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, (void*)(、4 * sizeof(GLushort)));
 }    
     
     GLuint Renderer::generateTextureID(size_t width, size_t height, GLubyte *imageData)

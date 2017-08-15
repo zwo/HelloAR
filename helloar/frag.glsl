@@ -9,7 +9,7 @@ uniform sampler2D Texture;
 void main(void)
 {
 	if (TexOnIn)
-		gl_FragColor = vcolor * texture2D(Texture, TexCoordOut);
+		gl_FragColor = texture2D(Texture, TexCoordOut);
 	else
-		gl_FragColor = vcolor;	
+		gl_FragColor = vcolor;
 }

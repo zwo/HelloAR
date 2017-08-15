@@ -41,6 +41,9 @@ private:
     unsigned int buildingSideTexture;
     GLuint _texCoordSlot;
     GLuint _textureUniform;
+    GLuint _tex_face_pos;
+    GLuint _tex_face_index;
+    GLuint _tex_face_coord;
 };
 
 }
