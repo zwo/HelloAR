@@ -157,27 +157,15 @@ void Renderer::render(const Matrix44F& projectionMatrix, const Matrix44F& camera
     }
 
     // 立方体
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_coord_box);
-    const GLfloat cube_vertices_2[8][3] = {
-        /* +z */{size[0] / 5, size[1] / 5, size[0] },{size[0] / 5, -size[1] / 5, size[0]},{-size[0] / 5, -size[1] / 5, size[0]},{-size[0] / 4, size[1] / 5, size[0]},
-        /* -z */{size[0] / 5, size[1] / 5, 0},{size[0] / 5, -size[1] / 5, 0},{-size[0] / 5, -size[1] / 5, 0},{-size[0] / 5, size[1] / 5, 0}};
-    glBufferData(GL_ARRAY_BUFFER, sizeof(cube_vertices_2), cube_vertices_2, GL_DYNAMIC_DRAW);
-    glEnableVertexAttribArray(pos_coord_box);
-    glVertexAttribPointer(pos_coord_box, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_color_box_2);
-    glEnableVertexAttribArray(pos_color_box);
-    glVertexAttribPointer(pos_color_box, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
-    for(int i = 0; i < 6; i++) {
-        glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, (void*)(i * 4 * sizeof(GLushort)));
-    }
+
     
     // render one face
     glUniform1i(texture_switch, GL_TRUE);
     glBindBuffer(GL_ARRAY_BUFFER, _tex_face_pos);
-    const GLfloat top_vertices[4][3]={/* +z */{size[0] / 5, size[1] / 5, size[0]+static_cast<GLfloat>(0.01)},{size[0] / 5, -size[1] / 5, size[0]+static_cast<GLfloat>(0.01)},{-size[0] / 5, -size[1] / 5, size[0]+static_cast<GLfloat>(0.01)},{-size[0] / 4, size[1] / 5, size[0]+static_cast<GLfloat>(0.01)}};
+    const GLfloat top_vertices[4][3]={/* +z */{size[0] / 5, size[1] / 5, size[0]+static_cast<GLfloat>(0.01)},{size[0] / 5, -size[1] / 5, size[0]+static_cast<GLfloat>(0.01)},{-size[0] / 5, -size[1] / 5, size[0]+static_cast<GLfloat>(0.01)},{-size[0] / 5, size[1] / 5, size[0]+static_cast<GLfloat>(0.01)}};
     glBufferData(GL_ARRAY_BUFFER, sizeof(top_vertices), top_vertices, GL_DYNAMIC_DRAW);
     glEnableVertexAttribArray(pos_coord_box);
-    glVertexAttribPointer(pos_coord_box, 3, GL_FLOAT, GL_FALSE, sizeof(top_vertices), 0);
+    glVertexAttribPointer(pos_coord_box, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glActiveTexture(GL_TEXTURE0); // unneccc in practice
     glBindTexture(GL_TEXTURE_2D, buildingTopTexture);
     glUniform1i(_textureUniform, 0); // unnecc in practice
@@ -193,7 +181,8 @@ void Renderer::render(const Matrix44F& projectionMatrix, const Matrix44F& camera
         GLuint texName;
         glGenTextures(1, &texName);
         glBindTexture(GL_TEXTURE_2D, texName);
-        
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)width, (GLsizei)height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
