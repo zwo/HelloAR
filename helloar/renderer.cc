@@ -162,13 +162,73 @@ void Renderer::render(const Matrix44F& projectionMatrix, const Matrix44F& camera
     // render one face
     glUniform1i(texture_switch, GL_TRUE);
     glBindBuffer(GL_ARRAY_BUFFER, _tex_face_pos);
-    const GLfloat top_vertices[4][3]={/* +z */{size[0] / 5, size[1] / 5, size[0]+static_cast<GLfloat>(0.01)},{size[0] / 5, -size[1] / 5, size[0]+static_cast<GLfloat>(0.01)},{-size[0] / 5, -size[1] / 5, size[0]+static_cast<GLfloat>(0.01)},{-size[0] / 5, size[1] / 5, size[0]+static_cast<GLfloat>(0.01)}};
+    const GLfloat top_vertices[4][3]={/* +z */{size[0] / 5, size[1] / 5, size[0]},{size[0] / 5, -size[1] / 5, size[0]},{-size[0] / 5, -size[1] / 5, size[0]},{-size[0] / 5, size[1] / 5, size[0]}};
     glBufferData(GL_ARRAY_BUFFER, sizeof(top_vertices), top_vertices, GL_DYNAMIC_DRAW);
     glEnableVertexAttribArray(pos_coord_box);
     glVertexAttribPointer(pos_coord_box, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glActiveTexture(GL_TEXTURE0); // unneccc in practice
     glBindTexture(GL_TEXTURE_2D, buildingTopTexture);
     glUniform1i(_textureUniform, 0); // unnecc in practice
+    glBindBuffer(GL_ARRAY_BUFFER, _tex_face_coord);
+    glEnableVertexAttribArray(_texCoordSlot);
+    glVertexAttribPointer(_texCoordSlot, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _tex_face_index);
+    glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, 0);
+    
+    // render front face
+    glBindBuffer(GL_ARRAY_BUFFER, _tex_face_pos);
+    const GLfloat front_vertices[4][3]={{size[0]/5, -size[1]/5, size[0]},{size[0]/5, -size[1]/5, 0},{-size[0]/5, -size[1]/5, 0},{-size[0]/5, -size[1]/5, size[0]}};
+    glBufferData(GL_ARRAY_BUFFER, sizeof(front_vertices), front_vertices, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(pos_coord_box);
+    glVertexAttribPointer(pos_coord_box, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glActiveTexture(GL_TEXTURE0); // unneccc in practice
+    glBindTexture(GL_TEXTURE_2D, buildingSideTexture);
+    glUniform1i(_textureUniform, 0); // unnecc in practice
+    glBindBuffer(GL_ARRAY_BUFFER, _tex_face_coord);
+    glEnableVertexAttribArray(_texCoordSlot);
+    glVertexAttribPointer(_texCoordSlot, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _tex_face_index);
+    glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, 0);
+    
+    // render right face
+    glBindBuffer(GL_ARRAY_BUFFER, _tex_face_pos);
+    const GLfloat right_vertices[4][3]={{size[0]/5, size[1]/5, size[0]},{size[0]/5, size[1]/5, 0},{size[0]/5, -size[1]/5, 0},{size[0]/5, -size[1]/5, size[0]}};
+    glBufferData(GL_ARRAY_BUFFER, sizeof(right_vertices), right_vertices, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(pos_coord_box);
+    glVertexAttribPointer(pos_coord_box, 3, GL_FLOAT, GL_FALSE, 0, 0);
+//    glActiveTexture(GL_TEXTURE0); // unneccc in practice
+//    glBindTexture(GL_TEXTURE_2D, buildingSideTexture);
+//    glUniform1i(_textureUniform, 0); // unnecc in practice
+    glBindBuffer(GL_ARRAY_BUFFER, _tex_face_coord);
+    glEnableVertexAttribArray(_texCoordSlot);
+    glVertexAttribPointer(_texCoordSlot, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _tex_face_index);
+    glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, 0);
+    
+    // render back face
+    glBindBuffer(GL_ARRAY_BUFFER, _tex_face_pos);
+    const GLfloat back_vertices[4][3]={{-size[0]/5, size[1]/5, size[0]},{-size[0]/5, size[1]/5, 0},{size[0]/5, size[1]/5, 0},{size[0]/5, size[1]/5, size[0]}};
+    glBufferData(GL_ARRAY_BUFFER, sizeof(back_vertices), back_vertices, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(pos_coord_box);
+    glVertexAttribPointer(pos_coord_box, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glActiveTexture(GL_TEXTURE0); // unneccc in practice
+//    glBindTexture(GL_TEXTURE_2D, buildingSideTexture);
+//    glUniform1i(_textureUniform, 0); // unnecc in practice
+//    glBindBuffer(GL_ARRAY_BUFFER, _tex_face_coord);
+    glEnableVertexAttribArray(_texCoordSlot);
+    glVertexAttribPointer(_texCoordSlot, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _tex_face_index);
+    glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, 0);
+    
+    // render left face
+    glBindBuffer(GL_ARRAY_BUFFER, _tex_face_pos);
+    const GLfloat left_vertices[4][3]={{-size[0]/5, size[1]/5, size[0]},{-size[0]/5, size[1]/5, 0},{-size[0]/5, -size[1]/5, 0},{-size[0]/5, -size[1]/5, size[0]}};
+    glBufferData(GL_ARRAY_BUFFER, sizeof(left_vertices), left_vertices, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(pos_coord_box);
+    glVertexAttribPointer(pos_coord_box, 3, GL_FLOAT, GL_FALSE, 0, 0);
+//    glActiveTexture(GL_TEXTURE0); // unneccc in practice
+//    glBindTexture(GL_TEXTURE_2D, buildingSideTexture);
+//    glUniform1i(_textureUniform, 0); // unnecc in practice
     glBindBuffer(GL_ARRAY_BUFFER, _tex_face_coord);
     glEnableVertexAttribArray(_texCoordSlot);
     glVertexAttribPointer(_texCoordSlot, 2, GL_FLOAT, GL_FALSE, 0, 0);
